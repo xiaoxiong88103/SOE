@@ -1,0 +1,14 @@
+{
+  "url":"http://192.168.2.182:8086",
+  "databases":"master",
+  "token":"fibRIvanZtNnlQQ33XdVQRKd7tSsbApyvYy4IHIT6IbWb_bL24Lx2ddYvvA2ySzay9oYYaYGcUWLpSN04_OpBQ==",
+  "org":"md",
+  "prot":"10000",
+
+  "MaxConnectionIdle": "30",
+  "MaxConnectionAge" : "5",
+  "MaxConnectionAgeGrace": "5",
+  "Time": "30",
+  "Timeout": "10"
+
+}

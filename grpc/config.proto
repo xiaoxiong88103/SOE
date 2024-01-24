@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package monitor;
+
+option go_package = "./;config";
+
+
+service SystemMetrics {
+  rpc GethardwareInfo (hardwareInfo) returns (Response) {}
+  rpc GetSystemInfo (SystemInfo) returns (Response) {}
+}
+
+
+// 空消息，用于不带任何参数的RPC调用。
+message Empty {}
+
+message Response {
+  string response = 1; // 返回的字符串
+  float time = 2;
+}
+
+
+// CPU 信息消息，包括核心数、型号、频率等具体信息。
+message hardwareInfo {
+  int32 num_cores = 1;          // CPU 核心数
+  string model_name = 2;       // CPU 型号名称
+  float max_frequency_ghz = 3; // 最大频率（GHz）
+  float total_gb = 4;           // 内存总量（以GB为单位）
+  repeated string disk_size_gb = 5; // 磁盘大小（以GB为单位）
+  int32 num_blocks = 6;   // 磁盘块数
+}
+
+
+// 系统信息消息，包括CPU使用率、内存使用率、VPU使用百分比、NPU使用百分比、GPU使用百分比和IO使用率（读取和写入）。
+message SystemInfo {
+  float bandwidth_usage_per_sec = 1; // 每秒带宽使用率
+  float cpu_usage_percent = 2;     // CPU使用率
+  float memory_usage_percent = 3;  // 内存使用率
+  float vpu_usage_percent = 4;     // VPU使用百分比
+  repeated float npu_usage_percent = 5;     // NPU使用百分比
+  float gpu_usage_percent = 6;     // GPU使用百分比
+  float io_read_usage_percent = 7; // IO读取使用率
+  float io_write_usage_percent = 8; // IO写入使用率
+  float network_upload_usage_percent = 9; // 网络上传使用率
+  float network_download_usage_percent = 10; // 网络下载使用率
+  int64 network_connections = 11; // 当前网络连接数
+  float system_load_avg = 12; // 系统平均负载
+  string disk_size_gb_shengyu = 13; // 磁盘剩余大小（以GB为单位）
+}

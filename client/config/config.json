@@ -1,0 +1,6 @@
+{
+  "serverip": "127.0.0.1:10000",
+  "time_put": "30",
+  "time_out": "10",
+  "time_put_err_out": "60"
+}
