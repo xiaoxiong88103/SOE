@@ -1,4 +1,4 @@
-package main
+package function
 
 import (
 	"github.com/gin-gonic/gin"
@@ -8,4 +8,8 @@ import (
 func Get_Null(c *gin.Context) {
 	data := gin.H{"code": http.StatusOK}
 	c.JSON(http.StatusOK, data)
+}
+
+func Update_Aii(c *gin.Context) {
+
 }

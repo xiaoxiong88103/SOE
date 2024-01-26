@@ -13,6 +13,7 @@ import (
 	"time"
 )
 
+//每次开机的时候发送给server来保证 机器的配置
 func SendhardwareInfo(client pb.SystemMetricsClient) error {
 	// 创建一个有超时的上下文
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)

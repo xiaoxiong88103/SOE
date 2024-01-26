@@ -31,10 +31,10 @@ func main() {
 
 	// 发送系统参数信息
 	function.SendhardwareInfo(client)
-
 	for {
 		timeSleep, _ := function.System_info(client)
 		fmt.Println("ok", timeSleep)
 		time.Sleep(time.Duration(timeSleep) * time.Second)
 	}
+
 }

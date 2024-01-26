@@ -1,27 +1,76 @@
 package main
 
 import (
-	"context"
-	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
+	"fmt"
+	"github.com/shirou/gopsutil/cpu"
+	"github.com/shirou/gopsutil/disk"
+	"github.com/shirou/gopsutil/mem"
 	"time"
 )
 
-func main() {
-	//token := "gE76J6WGq8ze_rcsPdHz1ujZ7eGfUE-x09nK6ueGoInI_59bJW15l4NLaE7tgtN62A7yP-hpLcaAVkZE5tqQYA=="
-	token_master := "wu4gt4dawUhisRvG7F_C0yoHVoRBPr3xZnf6lVQQ2o_Dh7gJU6tsGglViR6C1GYmkhft9YgchEnEIC-eanazVw=="
-	bucket := "master"
-	url := "http://192.168.200.134:8086"
-	client := influxdb2.NewClient(url, token_master)
-	org := "md"
-	writeAPI := client.WriteAPIBlocking(org, bucket)
+// 使用指针存储上一次的读写字节总数，便于检查是否已经设置
+var prevReadBytes, prevWriteBytes *uint64
 
-	p := influxdb2.NewPointWithMeasurement("cpu_usage").
-		AddTag("servername", "server1").
-		AddField("usage", 10).
-		SetTime(time.Now())
-
-	err := writeAPI.WritePoint(context.Background(), p)
+// 获取CPU、内存、IO读写的使用率
+func getSystemStats() (float32, float32, float32, float32) {
+	// 获取IO读写使用率
+	ioStats, err := disk.IOCounters()
 	if err != nil {
-		panic(err)
+		fmt.Printf("Error getting IO counters: %v\n", err)
+		return 0, 0, 0, 0
+	}
+
+	var totalReadBytes, totalWriteBytes uint64
+	for _, stat := range ioStats {
+		totalReadBytes += stat.ReadBytes
+		totalWriteBytes += stat.WriteBytes
+	}
+
+	var ioReadUsage, ioWriteUsage float32
+
+	// 如果是第一次调用，仅设置初始值
+	if prevReadBytes == nil || prevWriteBytes == nil {
+		prevReadBytes = new(uint64)
+		prevWriteBytes = new(uint64)
+		*prevReadBytes = totalReadBytes
+		*prevWriteBytes = totalWriteBytes
+	} else {
+		// 计算读写字节增量
+		readBytes := totalReadBytes - *prevReadBytes
+		writeBytes := totalWriteBytes - *prevWriteBytes
+
+		// 将增量转换为MB/s
+		ioReadUsage = float32(readBytes) / 1024 / 1024
+		ioWriteUsage = float32(writeBytes) / 1024 / 1024
+
+		// 更新上一次的读写字节总数
+		*prevReadBytes = totalReadBytes
+		*prevWriteBytes = totalWriteBytes
+	}
+
+	// 获取CPU使用率
+	cpuStats, err := cpu.Percent(0, false)
+	if err != nil {
+		fmt.Printf("Error getting CPU percent: %v\n", err)
+		return 0, 0, 0, 0
+	}
+	cpuUsage := float32(cpuStats[0])
+
+	// 获取内存使用率
+	memStats, err := mem.VirtualMemory()
+	if err != nil {
+		fmt.Printf("Error getting virtual memory: %v\n", err)
+		return 0, 0, 0, 0
+	}
+	memUsage := float32(memStats.UsedPercent)
+
+	return ioReadUsage, ioWriteUsage, cpuUsage, memUsage
+}
+
+func main() {
+	for {
+		read, write, cpu, mem := getSystemStats()
+		fmt.Printf("IO Read: %.2f MB/s, IO Write: %.2f MB/s, CPU: %.2f%%, MEM: %.2f%%\n", read, write, cpu, mem)
+		time.Sleep(1 * time.Second)
 	}
 }

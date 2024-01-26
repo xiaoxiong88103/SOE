@@ -46,4 +46,5 @@ message SystemInfo {
   int64 network_connections = 11; // 当前网络连接数
   float system_load_avg = 12; // 系统平均负载
   string disk_size_gb_shengyu = 13; // 磁盘剩余大小（以GB为单位）
+  string time = 14;
 }

@@ -20,21 +20,21 @@ var (
 func Link_master() (pb.SystemMetricsClient, func(), error) {
 	once.Do(func() {
 		// 解析服务器IP
-		ip, errDecode := config.Dcode_json("config.json","serverip")
+		ip, errDecode := config.Dcode_json("config.json", "serverip")
 		if errDecode != nil {
 			err = fmt.Errorf("解析服务器IP出错: %v", errDecode)
 			return
 		}
 		fmt.Println("连接到服务器:", ip)
 
-		time_put, errDecode := config.DecodeJsonAsInt("config.json","time_put")
+		time_put, errDecode := config.DecodeJsonAsInt("config.json", "time_put")
 		if errDecode != nil {
 			err = fmt.Errorf("解析心跳时间出问题json is time:string(数字) : %v", errDecode)
 			return
 		}
 		fmt.Println("发送心跳每:", time_put, "秒发送一次")
 
-		time_out, errDecode := config.DecodeJsonAsInt("config.json","time_out")
+		time_out, errDecode := config.DecodeJsonAsInt("config.json", "time_out")
 		if errDecode != nil {
 			err = fmt.Errorf("解析心跳时间出问题json is time:string(数字) : %v", errDecode)
 			return
@@ -49,11 +49,13 @@ func Link_master() (pb.SystemMetricsClient, func(), error) {
 		}
 
 		// 建立连接
-		conn, err = grpc.Dial(ip,
+		conn, err = grpc.Dial(
+			ip,
 			grpc.WithInsecure(),
 			grpc.WithBlock(),
 			grpc.WithKeepaliveParams(kacp), // 添加心跳参数
 		)
+
 		if err != nil {
 			return
 		}

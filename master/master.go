@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	prot, err := config.Dcode_json("config.json","prot")
+	prot, err := config.Dcode_json("config.json", "prot")
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -43,7 +43,7 @@ func main() {
 }
 
 func getconfig(configKey string) int {
-	value, err := config.DecodeJsonAsInt("config.json",configKey)
+	value, err := config.DecodeJsonAsInt("config.json", configKey)
 	if err != nil {
 		log.Fatalf("获取配置 %s 出错: %v", configKey, err)
 	}

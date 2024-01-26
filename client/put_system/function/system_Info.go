@@ -12,7 +12,7 @@ import (
 //发送参数的函数
 func System_info(client pb.SystemMetricsClient) (float32, error) {
 	// 创建一个有超时的上下文
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	// 获取上传下载的值
@@ -30,8 +30,10 @@ func System_info(client pb.SystemMetricsClient) (float32, error) {
 		errDecode = fmt.Errorf("解析心跳时间出问题json is time:string(数字) : %v", errDecode)
 		return 10, errDecode
 	}
+	currentTime := time.Now()
+	timeStr := currentTime.Format(time.RFC3339)
 
-	response, err := client.GetSystemInfo(ctx, &pb.SystemInfo{
+	systemInfo := pb.SystemInfo{
 		BandwidthUsagePerSec:        network_all,
 		CpuUsagePercent:             cpu_use,
 		MemoryUsagePercent:          memory_use,
@@ -45,10 +47,15 @@ func System_info(client pb.SystemMetricsClient) (float32, error) {
 		DiskSizeGbShengyu:           GetPartitionSpace(),
 		VpuUsagePercent:             0,
 		NpuUsagePercent:             getNPU(),
-	})
-
+		Time:                        timeStr,
+	}
+	response, err := client.GetSystemInfo(ctx, &systemInfo)
 	if err != nil {
 		log.Printf("无法发送系统信息: %v", err)
+		errorjson := Off_line(&systemInfo)
+		if errorjson != nil {
+			fmt.Println("无法存储json", errorjson)
+		}
 		return time_err, err
 	} else {
 		return response.GetTime(), nil

@@ -14,6 +14,8 @@ import (
 	"time"
 )
 
+//获取VPU/NPU等利用率等等
+
 //获取网络上传下载的当前速率的
 func network() (float64, float64) {
 	lastStat, _ := net.IOCounters(true)
@@ -34,22 +36,68 @@ func network() (float64, float64) {
 }
 
 // 获取CPU、内存、IO读写的使用率
+//func getSystemStats() (float32, float32, float32, float32) {
+//	// 获取IO读写使用率
+//	ioStats, err := disk.IOCounters()
+//	if err != nil {
+//		return 0, 0, 0, 0
+//	}
+//
+//	var ioReadUsage, ioWriteUsage float32
+//	for _, stat := range ioStats {
+//		ioReadUsage += float32(stat.ReadBytes) / 1024 / 1024
+//		ioWriteUsage += float32(stat.WriteBytes) / 1024 / 1024
+//	}
+//
+//	// 获取CPU使用率
+//	cpuStats, err := cpu.Percent(0, false)
+//	if err != nil {
+//		return 0, 0, 0, 0
+//	}
+//	cpuUsage := float32(cpuStats[0])
+//
+//	// 获取内存使用率
+//	memStats, err := mem.VirtualMemory()
+//	if err != nil {
+//		return 0, 0, 0, 0
+//	}
+//	memUsage := float32(memStats.UsedPercent)
+//
+//	return ioReadUsage, ioWriteUsage, cpuUsage, memUsage
+//}
+
+// 获取CPU、内存、IO读写的使用率
 func getSystemStats() (float32, float32, float32, float32) {
+	var prevReadBytes, prevWriteBytes uint64
 	// 获取IO读写使用率
 	ioStats, err := disk.IOCounters()
 	if err != nil {
+		fmt.Printf("Error getting IO counters: %v\n", err)
 		return 0, 0, 0, 0
 	}
 
-	var ioReadUsage, ioWriteUsage float32
+	var totalReadBytes, totalWriteBytes uint64
 	for _, stat := range ioStats {
-		ioReadUsage += float32(stat.ReadBytes) / 1024 / 1024
-		ioWriteUsage += float32(stat.WriteBytes) / 1024 / 1024
+		totalReadBytes += stat.ReadBytes
+		totalWriteBytes += stat.WriteBytes
 	}
+
+	// 计算读写字节增量
+	readBytes := totalReadBytes - prevReadBytes
+	writeBytes := totalWriteBytes - prevWriteBytes
+
+	// 更新上一次的读写字节总数
+	prevReadBytes = totalReadBytes
+	prevWriteBytes = totalWriteBytes
+
+	// 将增量转换为MB/s
+	ioReadUsage := float32(readBytes) / 1024 / 1024
+	ioWriteUsage := float32(writeBytes) / 1024 / 1024
 
 	// 获取CPU使用率
 	cpuStats, err := cpu.Percent(0, false)
 	if err != nil {
+		fmt.Printf("Error getting CPU percent: %v\n", err)
 		return 0, 0, 0, 0
 	}
 	cpuUsage := float32(cpuStats[0])
@@ -57,6 +105,7 @@ func getSystemStats() (float32, float32, float32, float32) {
 	// 获取内存使用率
 	memStats, err := mem.VirtualMemory()
 	if err != nil {
+		fmt.Printf("Error getting virtual memory: %v\n", err)
 		return 0, 0, 0, 0
 	}
 	memUsage := float32(memStats.UsedPercent)

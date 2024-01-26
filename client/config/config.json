@@ -1,6 +1,8 @@
 {
   "serverip": "127.0.0.1:10000",
-  "time_put": "30",
+  "time_put": "3",
   "time_out": "10",
-  "time_put_err_out": "60"
+  "time_put_err_out": "5",
+  "gin_prot":"10001",
+  "client_file_off_h": "12"
 }
