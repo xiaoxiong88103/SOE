@@ -3,8 +3,11 @@ package function
 import (
 	"encoding/json"
 	"fmt"
+	"influxdb/config"
 	pb "influxdb/grpc"
+	"io/ioutil"
 	"os"
+	"path/filepath"
 	"time"
 )
 
@@ -22,6 +25,16 @@ func Off_line(systemInfo *pb.SystemInfo) error {
 
 	// 确保文件夹存在
 	err = os.MkdirAll(fileDir, 0755)
+	if err != nil {
+		return err
+	}
+	openjson, err_json := config.DecodeJsonAsInt("config", "client_offonline_log_day")
+	if err_json != nil {
+		return err_json
+	}
+	// 删除超过xx天的文件
+	tenDaysAgo := time.Now().AddDate(0, 0, -+openjson)
+	err = deleteOldFiles(fileDir, tenDaysAgo)
 	if err != nil {
 		return err
 	}
@@ -43,6 +56,28 @@ func Off_line(systemInfo *pb.SystemInfo) error {
 	_, err = file.WriteString("\n")
 	if err != nil {
 		return err
+	}
+
+	return nil
+}
+
+func deleteOldFiles(dirPath string, threshold time.Time) error {
+	files, err := ioutil.ReadDir(dirPath)
+	if err != nil {
+		return err
+	}
+
+	for _, file := range files {
+		if file.IsDir() {
+			continue
+		}
+
+		if file.ModTime().Before(threshold) {
+			err := os.Remove(filepath.Join(dirPath, file.Name()))
+			if err != nil {
+				return err
+			}
+		}
 	}
 
 	return nil

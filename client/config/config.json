@@ -4,5 +4,6 @@
   "time_out": "10",
   "time_put_err_out": "5",
   "gin_prot":"10001",
-  "client_file_off_h": "12"
+  "client_file_off_h": "12",
+  "client_offonline_log_day": "10"
 }
