@@ -1,6 +1,7 @@
 package user_ini
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/go-ini/ini"
 )
@@ -125,4 +126,41 @@ func UpdateUserdata(username string, newPassword string, newAdmin string, newGro
 	}
 
 	return nil
+}
+
+// ShowUser 读取 INI 文件并返回用户信息
+func ShowUser() (string, error) {
+	cfg, err := ini.Load(Path_ini_file + "user_login.ini")
+	if err != nil {
+		return "", err
+	}
+
+	result := UserSections{
+		User:  make(map[string]string),
+		Admin: make(map[string]string),
+		Group: make(map[string]string),
+	}
+
+	// 从 INI 文件的每个部分中读取数据
+	for _, section := range []string{"user", "admin", "group"} {
+		for _, key := range cfg.Section(section).Keys() {
+			value := key.Value()
+			switch section {
+			case "user":
+				result.User[key.Name()] = value
+			case "admin":
+				result.Admin[key.Name()] = value
+			case "group":
+				result.Group[key.Name()] = value
+			}
+		}
+	}
+
+	// 将结果转换为 JSON 字符串
+	jsonResult, err := json.Marshal(result)
+	if err != nil {
+		return "", err
+	}
+
+	return string(jsonResult), nil
 }

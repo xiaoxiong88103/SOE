@@ -15,3 +15,10 @@ type editipgrop struct {
 type delipgrop struct {
 	addipgroup
 }
+
+// UserSections 包含不同部分的用户信息
+type UserSections struct {
+	User  map[string]string `json:"user"`
+	Admin map[string]string `json:"admin"`
+	Group map[string]string `json:"group"`
+}

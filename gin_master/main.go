@@ -20,7 +20,9 @@ func main() {
 
 	route.POST("/login", user_login.LoginWeb)
 
-	routes.UserRoutes(route)
+	routes.UserRoutes(route) //用户增删改查的
+
+	routes.DatabasesTSDB(route) //查询的
 
 	prot, err := config.Dcode_json("web.json", "gin_prot")
 	if err != nil {

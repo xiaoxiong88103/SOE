@@ -159,3 +159,49 @@ func UpdateUser(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "用户修改成功"})
 }
+
+// ShowUserHandler 处理 /user/show 的 GET 请求
+// @Summary 显示用户信息
+// @Description 获取系统中所有用户的账号、权限和组信息
+// @Tags 用户
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @Param Authorization header string true "授权令牌"
+// @Success 200 {object} string "{ Message string "message"; Data string "data" }" "用户信息获取成功"
+// @Failure 401 {object} string "未授权" 返回的json({"error": "无效的令牌"})
+// @Failure 403 {object} string "禁止访问" 返回的json({"message": "对不起你权限不足"})
+// @Failure 500 {object} string "内部服务器错误" 返回的json({"error": "错误信息"})
+// @Router /user/show [get]
+func ShowUserHandler(c *gin.Context) {
+	tokenString := c.GetHeader("Authorization")
+
+	// 解析 JWT 令牌并提取用户名
+	username, err := function.DecodeToken_username(tokenString)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "无效的令牌"})
+		return
+	}
+
+	// 检查当前用户是否有足够权限执行删除操作
+	user_admin := user_ini.Show_admin(username)
+	if user_admin <= "90" {
+		c.JSON(http.StatusForbidden, gin.H{"message": "对不起你权限不足"})
+		return
+	}
+
+	userInfo, err := user_ini.ShowUser() // 调用之前定义的 ShowUser 函数
+	if err != nil {
+		// 如果有错误，返回错误信息
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	// 返回用户信息
+	c.JSON(http.StatusOK, gin.H{
+		"message": "用户信息获取成功",
+		"data":    userInfo,
+	})
+}

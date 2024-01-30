@@ -13,4 +13,5 @@ func UserRoutes(router *gin.Engine) {
 	user.POST("/add", user_login.Adduser)
 	user.DELETE("/del", user_login.DeleteUser)
 	user.POST("/edit", user_login.UpdateUser)
+	user.POST("/show", user_login.ShowUserHandler)
 }
