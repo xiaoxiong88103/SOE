@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 )
 
@@ -28,13 +29,12 @@ func Off_line(systemInfo *pb.SystemInfo) error {
 	if err != nil {
 		return err
 	}
-	openjson, err_json := config.DecodeJsonAsInt("config", "client_offonline_log_day")
+	openjson, err_json := config.DecodeJsonAsInt("config.json", "client_offonline_log_day")
 	if err_json != nil {
 		return err_json
 	}
 	// 删除超过xx天的文件
-	tenDaysAgo := time.Now().AddDate(0, 0, -+openjson)
-	err = deleteOldFiles(fileDir, tenDaysAgo)
+	err = deleteOldFiles(fileDir, openjson)
 	if err != nil {
 		return err
 	}
@@ -61,19 +61,37 @@ func Off_line(systemInfo *pb.SystemInfo) error {
 	return nil
 }
 
-func deleteOldFiles(dirPath string, threshold time.Time) error {
+func deleteOldFiles(dirPath string, days int) error {
+	threshold := time.Now().AddDate(0, 0, -days) // 设置天数阈值
+
 	files, err := ioutil.ReadDir(dirPath)
 	if err != nil {
 		return err
 	}
 
+	fmt.Println("检查文件夹:", dirPath)
 	for _, file := range files {
 		if file.IsDir() {
 			continue
 		}
 
-		if file.ModTime().Before(threshold) {
-			err := os.Remove(filepath.Join(dirPath, file.Name()))
+		// 提取文件名中的日期部分并进行格式检查
+		splitName := strings.Split(file.Name(), "_")
+		if len(splitName) != 2 || !strings.HasSuffix(splitName[1], ".log") {
+			continue
+		}
+
+		fileDate, err := time.Parse("2006-01-02", splitName[0])
+		if err != nil {
+			fmt.Println("日期格式错误:", file.Name())
+			continue
+		}
+
+		// 比较日期
+		if fileDate.Before(threshold) {
+			filePath := filepath.Join(dirPath, file.Name())
+			fmt.Println("删除过期文件:", filePath, "文件日期:", fileDate)
+			err := os.Remove(filePath)
 			if err != nil {
 				return err
 			}

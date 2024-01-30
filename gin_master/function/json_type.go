@@ -1,16 +1,16 @@
 package function
 
-type login struct {
-	username string `json:"username"`
-	password string `json:"password"`
+type User struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
 }
 
-type adduser struct {
-	login
-	admin int64 `json:"admin"`
+type Add_user struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+	Admin    string `json:"admin"`
 }
 type deluser struct {
-	login
 }
 
 type addipgroup struct {

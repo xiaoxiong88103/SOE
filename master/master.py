@@ -85,10 +85,10 @@ def login():
 
     # 在这里处理登录逻辑，假设用户名和密码正确
     config_username = webconfig.get("username")
-    config_password = webconfig.get("password")
+    config_password = webconfig.get("password.ini")
 
     username = data.get("username")
-    password = data.get("password")
+    password = data.get("password.ini")
 
     # 如果用户名和密码验证成功，生成 token
     if username == config_username and password == config_password:

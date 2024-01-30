@@ -1,0 +1,38 @@
+definitions:
+  function.User:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: 处理用户登录请求，验证用户名和密码。
+      parameters:
+      - description: 登录信息
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/function.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '成功登录，返回token" example({"message": "登录成功", "token": "your-generated-token"})'
+          schema:
+            type: string
+        "401":
+          description: 认证失败
+          schema:
+            type: string
+      summary: 用户登录
+      tags:
+      - 用户认证
+swagger: "2.0"

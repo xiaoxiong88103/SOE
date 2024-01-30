@@ -73,7 +73,7 @@ func influxdb_link(ip string, bandwidth float32, cpu float32, mem float32, vpu f
 		AddField("systemaver", systemaver).
 		AddField("disksize", disksize).
 		SetTime(decodeTime)
-
+	fmt.Println("解析出来时间是:", decodeTime)
 	// 写入数据
 	writeAPI.WritePoint(p)
 
