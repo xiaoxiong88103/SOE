@@ -1,26 +1,15 @@
-package function
+package user_ini
 
 import (
 	"github.com/go-ini/ini"
-	"io/ioutil"
 )
 
-var Path_ini_file = "./data_web/user/"
-
-//读取token文件的功能
-func ReadTokenFromFile(filePath string) (string, error) {
-	// 读取文件内容
-	data, err := ioutil.ReadFile(filePath)
-	if err != nil {
-		return "", err
-	}
-	return string(data), nil
-}
+var Path_ini_file = "./data_web/user_login/"
 
 //读取ini文件的 key 和 value功能
 func readSectionValues(sectionName string) (map[string]string, error) {
 	// 打开配置文件
-	cfg, err := ini.Load(Path_ini_file + "user.ini")
+	cfg, err := ini.Load(Path_ini_file + "user_login.ini")
 	if err != nil {
 		return nil, err
 	}

@@ -51,7 +51,7 @@ func parseToken(tokenString string) (*Claims, error) {
 }
 
 // generateValidToken 用于生成有效的 JWT token 以供测试使用
-func generateValidToken(username string) string {
+func GenerateValidToken(username string) string {
 
 	time_token, err := config.DecodeJsonAsInt("web.json", "token_time_h")
 	if err != nil {

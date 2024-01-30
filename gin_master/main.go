@@ -6,7 +6,8 @@ import (
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"influxdb/config"
-	"influxdb/gin_master/function"
+	"influxdb/gin_master/function/user_login"
+	"influxdb/gin_master/routes"
 )
 
 func main() {
@@ -17,11 +18,9 @@ func main() {
 	route.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 	route.Static("/docs", "./docs")
 
-	route.POST("/login", function.LoginWeb)
+	route.POST("/login", user_login.LoginWeb)
 
-	user := route.Group("/user")
-	user.Use(function.AuthMiddleware()) // 在 user 组中使用 authMiddleware 中间件
-	user.POST("/add", function.Adduser)
+	routes.UserRoutes(route)
 
 	prot, err := config.Dcode_json("web.json", "gin_prot")
 	if err != nil {
