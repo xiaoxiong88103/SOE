@@ -24,6 +24,8 @@ func main() {
 
 	routes.DatabasesTSDB(route) //查询的
 
+	routes.Plugins(route)
+
 	prot, err := config.Dcode_json("web.json", "gin_prot")
 	if err != nil {
 		fmt.Println("开启的时候报错:", err)
