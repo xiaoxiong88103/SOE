@@ -24,7 +24,7 @@ func main() {
 
 	routes.DatabasesTSDB(route) //查询的
 
-	routes.Plugins(route)
+	routes.Plugins(route) //插件的功能
 
 	prot, err := config.Dcode_json("web.json", "gin_prot")
 	if err != nil {
