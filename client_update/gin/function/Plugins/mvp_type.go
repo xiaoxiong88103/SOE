@@ -1,6 +1,6 @@
 package Plugins
 
 type WgetJson struct {
-	Url      string `json:"url"`
+	Prot     string `json:"prot"`
 	Filename string `json:"filename"`
 }

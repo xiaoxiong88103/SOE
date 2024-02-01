@@ -15,14 +15,16 @@ import (
 
 func WgetMVP(c *gin.Context) {
 	var jsonInput WgetJson
-
+	clientIP := c.ClientIP()
 	if err := c.ShouldBindJSON(&jsonInput); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
 	// 下载文件
-	response, err := http.Get(jsonInput.Url)
+	response, err := http.Get("http://" + clientIP + ":" + jsonInput.Prot + "/files/" + jsonInput.Filename)
+	fmt.Println("http://" + clientIP + ":" + jsonInput.Prot + "/files/" + jsonInput.Filename)
+
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -65,7 +67,7 @@ func MVPOS(c *gin.Context) {
 		return
 	}
 
-	tarCommand := fmt.Sprintf("tar -zxvf %s", filename)
+	tarCommand := fmt.Sprintf("tar -zxvf %s -C /", filename)
 
 	// 执行解压命令
 	tarCmd := exec.Command("sh", "-c", tarCommand)
@@ -111,6 +113,14 @@ func MVPOS(c *gin.Context) {
 			return
 		}
 		time.Sleep(3 * time.Second)
+	}
+
+	remove := exec.Command("rm", "-rf", "/"+filename)
+	remove.Stdout = os.Stdout
+	remove.Stderr = os.Stderr
+	if err := remove.Run(); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{"code": "200"})

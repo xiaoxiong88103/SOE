@@ -8,10 +8,10 @@ import (
 	"time"
 )
 
-// 使用指针存储上一次的读写字节总数，便于检查是否已经设置
-var prevReadBytes, prevWriteBytes *uint64
+// 初始化为全局变量以跟踪上一次读写的字节数
+var prevReadBytes, prevWriteBytes uint64
 
-// 获取CPU、内存、IO读写的使用率
+//获取CPU、内存、IO读写的使用率
 func getSystemStats() (float32, float32, float32, float32) {
 	// 获取IO读写使用率
 	ioStats, err := disk.IOCounters()
@@ -26,27 +26,17 @@ func getSystemStats() (float32, float32, float32, float32) {
 		totalWriteBytes += stat.WriteBytes
 	}
 
-	var ioReadUsage, ioWriteUsage float32
+	// 计算读写字节增量
+	readBytes := totalReadBytes - prevReadBytes
+	writeBytes := totalWriteBytes - prevWriteBytes
 
-	// 如果是第一次调用，仅设置初始值
-	if prevReadBytes == nil || prevWriteBytes == nil {
-		prevReadBytes = new(uint64)
-		prevWriteBytes = new(uint64)
-		*prevReadBytes = totalReadBytes
-		*prevWriteBytes = totalWriteBytes
-	} else {
-		// 计算读写字节增量
-		readBytes := totalReadBytes - *prevReadBytes
-		writeBytes := totalWriteBytes - *prevWriteBytes
+	// 更新上一次的读写字节总数
+	prevReadBytes = totalReadBytes
+	prevWriteBytes = totalWriteBytes
 
-		// 将增量转换为MB/s
-		ioReadUsage = float32(readBytes) / 1024 / 1024
-		ioWriteUsage = float32(writeBytes) / 1024 / 1024
-
-		// 更新上一次的读写字节总数
-		*prevReadBytes = totalReadBytes
-		*prevWriteBytes = totalWriteBytes
-	}
+	// 将增量转换为MB/s
+	ioReadUsage := float32(readBytes) / 1024 / 1024
+	ioWriteUsage := float32(writeBytes) / 1024 / 1024
 
 	// 获取CPU使用率
 	cpuStats, err := cpu.Percent(0, false)
@@ -68,9 +58,15 @@ func getSystemStats() (float32, float32, float32, float32) {
 }
 
 func main() {
-	for {
-		read, write, cpu, mem := getSystemStats()
-		fmt.Printf("IO Read: %.2f MB/s, IO Write: %.2f MB/s, CPU: %.2f%%, MEM: %.2f%%\n", read, write, cpu, mem)
-		time.Sleep(1 * time.Second)
-	}
+	// 第一次调用前获取初始IO统计数据
+	getSystemStats()
+	// 等待1秒
+	time.Sleep(1 * time.Second)
+	// 获取并打印1秒内的使用量
+	ioreading_use, iowrite_use, cpu, mem := getSystemStats()
+	fmt.Printf("IO读使用了: %.2f MB\n", ioreading_use)
+	fmt.Printf("IO写使用了: %.2f MB\n", iowrite_use)
+	fmt.Printf("cpu写使用了: %.2f MB\n", cpu)
+	fmt.Printf("mem写使用了: %.2f MB\n", mem)
+
 }

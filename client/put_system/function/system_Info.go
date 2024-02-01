@@ -20,7 +20,10 @@ func System_info(client pb.SystemMetricsClient) (float32, error) {
 	network_all := float32(network_upload + network_download)
 
 	// 获取CPU、内存、IO读写的使用率
+	getSystemStats() //初始化IO
+	time.Sleep(1 * time.Second)
 	ioreading_use, iowrite_use, cpu_use, memory_use := getSystemStats()
+	
 	// 调用获取GPU使用率的函数
 	gpu_use := float32(getGPUUsage())
 
@@ -52,12 +55,10 @@ func System_info(client pb.SystemMetricsClient) (float32, error) {
 	response, err := client.GetSystemInfo(ctx, &systemInfo)
 	if err != nil {
 		log.Printf("无法发送系统信息: %v", err)
-		errorjson := Off_line(&systemInfo)
-		if errorjson != nil {
-			fmt.Println("无法存储json", errorjson)
-		}
+		Set_Global(1)
 		return time_err, err
 	} else {
+		Set_Global(0)
 		return response.GetTime(), nil
 	}
 

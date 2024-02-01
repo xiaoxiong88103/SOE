@@ -11,6 +11,7 @@ import (
 func main() {
 	route := gin.Default()
 	route.GET("/ping", function.Get_Null)
+	//MVP更新部分
 	mvp := route.Group("/mvp")
 	mvp.POST("/wget", Plugins.WgetMVP)
 	mvp.GET("/os", Plugins.MVPOS)

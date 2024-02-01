@@ -57,6 +57,11 @@ func influxdb_link(ip string, bandwidth float32, cpu float32, mem float32, vpu f
 	if err != nil {
 		fmt.Println("时间解析出问题了:", err)
 	}
+
+	//Debug专区
+	fmt.Printf("IP: %s, Bandwidth: %.2f, CPU: %.2f%%, Memory: %.2f%%, VPU: %.2f%%, GPU: %.2f%%, IO Read: %.2f, IO Write: %.2f, Network Up: %.2f, Network Load: %.2f, Network Connections: %d, System Average: %.2f, Disk Size: %s, Time: %s\n",
+		ip, bandwidth, cpu, mem, vpu, gpu, ioread, iowrite, networkup, networkload, netcon, systemaver, disksize, time_node)
+
 	p := influxdb2.NewPointWithMeasurement("system_info").
 		AddTag("ip", ip).
 		AddField("bandwidth", bandwidth).
