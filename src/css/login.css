@@ -1,0 +1,10 @@
+.login {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(255, 255, 255);
+  /* background-image: url("../public/loginBackground.jpg"); */
+  background-size: cover;
+  background-repeat: repeat;
+  background-clip: padding-box;
+  user-select: none;
+}
