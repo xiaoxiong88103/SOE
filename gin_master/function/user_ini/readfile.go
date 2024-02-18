@@ -4,12 +4,12 @@ import (
 	"github.com/go-ini/ini"
 )
 
-var Path_ini_file = "./data_web/user_login/"
+var Path_ini_file = "./data_web/user/"
 
 //读取ini文件的 key 和 value功能
 func readSectionValues(sectionName string) (map[string]string, error) {
 	// 打开配置文件
-	cfg, err := ini.Load(Path_ini_file + "user_login.ini")
+	cfg, err := ini.Load(Path_ini_file + "user.ini")
 	if err != nil {
 		return nil, err
 	}

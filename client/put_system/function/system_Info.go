@@ -23,7 +23,7 @@ func System_info(client pb.SystemMetricsClient) (float32, error) {
 	getSystemStats() //初始化IO
 	time.Sleep(1 * time.Second)
 	ioreading_use, iowrite_use, cpu_use, memory_use := getSystemStats()
-	
+
 	// 调用获取GPU使用率的函数
 	gpu_use := float32(getGPUUsage())
 

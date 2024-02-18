@@ -1,4 +1,4 @@
-package main
+package function
 
 import (
 	"bufio"
@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"google.golang.org/grpc"
-	"influxdb/client/put_system/function"
 	"influxdb/config"
 	pb "influxdb/grpc"
 	"io/ioutil"
@@ -34,7 +33,7 @@ func Put_log_json() {
 	defer conn() // 确保在函数退出时关闭连接
 
 	for {
-		if function.Show_Global() == 1 {
+		if Show_Global() == 1 {
 			break
 		}
 

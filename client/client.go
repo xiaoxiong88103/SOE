@@ -35,10 +35,10 @@ func main() {
 	}()
 	//  开启同步功能
 	go func() {
-		Put_log_json()
+		function.Put_log_json()
 	}()
 
-	// 使用 connectToMetricsServer 函数连接服务器
+	// 使用 Link_master 函数连接服务器
 	client, conn, err := link.Link_master()
 	if err != nil {
 		log.Fatalf("连接服务器时出错: %v", err)
@@ -50,7 +50,7 @@ func main() {
 	function.Set_Global(0)
 	for {
 		timeSleep, _ := function.System_info(client)
-		fmt.Println("ok", timeSleep)
+		//fmt.Println("ok", timeSleep)
 		time.Sleep(time.Duration(timeSleep) * time.Second)
 	}
 
