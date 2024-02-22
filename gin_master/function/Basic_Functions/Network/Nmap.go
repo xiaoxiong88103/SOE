@@ -18,7 +18,7 @@ import (
 // @Produce json
 // @Param ip query string true "IP地址"
 // @Param ports query string true "端口列表，端口之间用逗号分隔，如80,443,8080 or all"
-// @Success 200 {array} ScanResult "成功响应，返回扫描结果数组"
+// @Success 200 {array} string "成功响应，返回扫描结果数组"
 // @Failure 400 {object} string "请求参数错误"
 // @Failure 500 {object} string "内部服务器错误"
 // @Router /nmap [get]
