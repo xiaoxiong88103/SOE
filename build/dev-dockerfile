@@ -1,7 +1,8 @@
 FROM centos:7
 
 # 安装必要的软件包
-RUN yum update -y && yum install -y curl tar
+RUN yum update -y && yum install -y epel-*
+RUN yum install -y nmap curl tar
 
 # 设置工作目录
 WORKDIR /tmp
