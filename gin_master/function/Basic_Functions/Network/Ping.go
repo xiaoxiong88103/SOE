@@ -1,4 +1,4 @@
-package Basic_Functions
+package Network
 
 import (
 	"fmt"

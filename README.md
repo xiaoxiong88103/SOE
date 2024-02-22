@@ -54,7 +54,7 @@ docker run -d --name influxdb -p 8086:8086 -v /home/influxdb:/var/lib/influxdb i
 - `golang.org/x/net` v0.20.0
 - `google.golang.org/genproto` v0.0.0-20240102182953-50ed04b92917
 - `github.com/go-ping/ping` v1.1.0
-- 
+- `github.com/Ullaakut/nmap` v2.0.2+incompatible  **_"如果要使用服务器端口扫描的基础功能请先安装nmap"_**
 ## 编译文档
 
 当您拉取 git 仓库后，您可以按照以下步骤来部署项目：
