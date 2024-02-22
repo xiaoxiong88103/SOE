@@ -29,6 +29,6 @@ RUN mkdir SOE
 
 WORKDIR /SOE
 
-COPY ../* /SOE
+COPY . /SOE
 
 RUN go mod tidy
