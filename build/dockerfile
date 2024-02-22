@@ -1,0 +1,34 @@
+FROM centos:7
+
+# 安装必要的软件包
+RUN yum update -y && yum install -y curl tar
+
+# 设置工作目录
+WORKDIR /tmp
+
+# 使用环境变量存放Go的版本号
+ENV GO_VERSION 1.20
+
+# 判断架构并下载对应的Go包，解压到/usr/local目录下
+RUN ARCH=$(uname -m) && \
+    case $ARCH in \
+       x86_64) ARCH="amd64" ;; \
+       aarch64) ARCH="arm64" ;; \
+       *) echo "Unsupported architecture" && exit 1 ;; \
+    esac && \
+    curl -LO https://go.dev/dl/go${GO_VERSION}.linux-${ARCH}.tar.gz && \
+    tar -C /usr/local -xzf go${GO_VERSION}.linux-${ARCH}.tar.gz
+
+# 设置环境变量
+ENV PATH $PATH:/usr/local/go/bin
+
+# 验证Go安装
+RUN go version
+
+RUN mkdir SOE
+
+WORKDIR /SOE
+
+COPY ../* /SOE
+
+RUN go mod tidy
