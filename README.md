@@ -83,6 +83,21 @@ docker run -d --name influxdb -p 8086:8086 -v /home/influxdb:/var/lib/influxdb i
 - 请将 /本地可用的目录 替换为您本地可用的目录路径。 
 - 这将帮助您启动一个容器，使用已编译好的镜像，并将本地目录挂载到容器中。
 
+## 部署文档
+
+1. master部署
+   直接在物理机器上跑执行即可 在编译好的master文件夹下会有config 配置好数据库 和 端口直接 master 执行即可
+```bash
+chmod +x master
+./master &
+```
+2. node监控节点部署
+   直接在物理机器上跑执行即可 在编译好的client文件夹下会有config 配置好配置文件里的master的IP部分 即可 也可以根据config里的doc来配置
+```bash
+chmod +x client
+./client &
+```
+
 ## 简单运维平台面板
 
 SOE简单运维面板是一个为国产化系统设计的全面监控解决方案，旨在提供对嵌入式系统、单片机和服务器的高效、可靠的监控支持。此面板特别适用于需要集群部署的环境，无论是小规模的应用场景还是大型的企业级部署，SOE都能提供强大的监控和管理功能。
