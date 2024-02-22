@@ -19,10 +19,11 @@ func main() {
 	route.Static("/docs", "./docs")
 
 	route.POST("/login", user_login.LoginWeb)
-
 	routes.UserRoutes(route) //用户增删改查的
 
 	routes.DatabasesTSDB(route) //查询的
+
+	routes.Basic_func(route) //基础功能的
 
 	routes.Plugins(route) //插件的功能
 

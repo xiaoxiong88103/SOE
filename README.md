@@ -53,7 +53,8 @@ docker run -d --name influxdb -p 8086:8086 -v /home/influxdb:/var/lib/influxdb i
 - `github.com/json-iterator/go` v1.1.12
 - `golang.org/x/net` v0.20.0
 - `google.golang.org/genproto` v0.0.0-20240102182953-50ed04b92917
-
+- `github.com/go-ping/ping` v1.1.0
+- 
 ## 编译文档
 
 当您拉取 git 仓库后，您可以按照以下步骤来部署项目：
