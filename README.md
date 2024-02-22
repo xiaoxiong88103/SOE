@@ -9,6 +9,15 @@
 
 ## 技术栈
 
+### 数据库和数据处理
+
+- `github.com/influxdata/influxdb-client-go/v2` v2.13.0: InfluxDB的官方Go客户端。
+```shell
+#!/bin/bash
+#docker运行influxdb数据库示例 -v是挂载 influxdb的数据 -p是端口 可替换端口:8086 
+docker run -d --name influxdb -p 8086:8086 -v /home/influxdb:/var/lib/influxdb influxdb
+```
+
 ### Web框架和中间件
 
 - `github.com/gin-gonic/gin` v1.9.1: 高性能的HTTP web框架。
@@ -22,10 +31,6 @@
 ### 身份验证与授权
 
 - `github.com/golang-jwt/jwt/v4` v4.4.3: JWT(JSON Web Tokens)的Go实现。
-
-### 数据库和数据处理
-
-- `github.com/influxdata/influxdb-client-go/v2` v2.13.0: InfluxDB的官方Go客户端。
 
 ### 系统监控与性能
 
