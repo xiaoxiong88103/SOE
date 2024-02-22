@@ -1,4 +1,4 @@
-package Basic_Functions
+package Network
 
 type PingResult struct {
 	IP          string `json:"ip"`
