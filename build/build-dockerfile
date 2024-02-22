@@ -38,5 +38,5 @@ RUN mkdir -p /data/master && mkdir -p /data/client
 CMD cd /SOE/client && go build -o /data/client/ client.go && \
     cd /SOE/master && go build -o /data/master/ master.go && \
     cd /SOE/gin_master && go build -o /data/master/web main.go && \
-    cp -raf /SOE/gin_master/config /data/master/ && cp -afr /SOE/gin_master/data /data/master/
+    cp -raf /SOE/gin_master/config /data/master/ && cp -afr /SOE/gin_master/data /data/master/ && \
     echo 'OK!'
