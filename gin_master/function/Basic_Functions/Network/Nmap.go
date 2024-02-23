@@ -21,7 +21,7 @@ import (
 // @Success 200 {array} string "成功响应，返回扫描结果数组"
 // @Failure 400 {object} string "请求参数错误"
 // @Failure 500 {object} string "内部服务器错误"
-// @Router /nmap [get]
+// @Router /basic/nmap [get]
 func Nmap_node(c *gin.Context) {
 	ip := c.Query("ip")
 	portsQuery := c.Query("ports") // 期望格式为 "80,443,8080 or all"
