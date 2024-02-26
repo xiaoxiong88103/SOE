@@ -6,5 +6,6 @@
 
   "gin_prot":"10001",
   "client_file_off_h": "12",
-  "client_offonline_log_day": "10"
+  "client_offonline_log_day": "10",
+  "gpu_open":"open"
 }

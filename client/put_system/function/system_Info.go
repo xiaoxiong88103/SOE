@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-//发送参数的函数
+// 发送参数的函数
 func System_info(client pb.SystemMetricsClient) (float32, error) {
 	// 创建一个有超时的上下文
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -25,7 +25,7 @@ func System_info(client pb.SystemMetricsClient) (float32, error) {
 	ioreading_use, iowrite_use, cpu_use, memory_use := getSystemStats()
 
 	// 调用获取GPU使用率的函数
-	gpu_use := float32(getGPUUsage())
+	gpu_use := getGPUUsage()
 
 	time_put_err_out, errDecode := config.DecodeJsonAsInt("config.json", "time_put_err_out")
 	time_err := float32(time_put_err_out)

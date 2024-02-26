@@ -213,7 +213,7 @@ type SystemInfo struct {
 	MemoryUsagePercent          float32   `protobuf:"fixed32,3,opt,name=memory_usage_percent,json=memoryUsagePercent,proto3" json:"memory_usage_percent,omitempty"`                               // 内存使用率
 	VpuUsagePercent             float32   `protobuf:"fixed32,4,opt,name=vpu_usage_percent,json=vpuUsagePercent,proto3" json:"vpu_usage_percent,omitempty"`                                        // VPU使用百分比
 	NpuUsagePercent             []float32 `protobuf:"fixed32,5,rep,packed,name=npu_usage_percent,json=npuUsagePercent,proto3" json:"npu_usage_percent,omitempty"`                                 // NPU使用百分比
-	GpuUsagePercent             float32   `protobuf:"fixed32,6,opt,name=gpu_usage_percent,json=gpuUsagePercent,proto3" json:"gpu_usage_percent,omitempty"`                                        // GPU使用百分比
+	GpuUsagePercent             []string  `protobuf:"bytes,6,rep,name=gpu_usage_percent,json=gpuUsagePercent,proto3" json:"gpu_usage_percent,omitempty"`                                          // GPU使用各种数据只支持Nvidia-smi目前
 	IoReadUsagePercent          float32   `protobuf:"fixed32,7,opt,name=io_read_usage_percent,json=ioReadUsagePercent,proto3" json:"io_read_usage_percent,omitempty"`                             // IO读取使用率
 	IoWriteUsagePercent         float32   `protobuf:"fixed32,8,opt,name=io_write_usage_percent,json=ioWriteUsagePercent,proto3" json:"io_write_usage_percent,omitempty"`                          // IO写入使用率
 	NetworkUploadUsagePercent   float32   `protobuf:"fixed32,9,opt,name=network_upload_usage_percent,json=networkUploadUsagePercent,proto3" json:"network_upload_usage_percent,omitempty"`        // 网络上传使用率
@@ -291,11 +291,11 @@ func (x *SystemInfo) GetNpuUsagePercent() []float32 {
 	return nil
 }
 
-func (x *SystemInfo) GetGpuUsagePercent() float32 {
+func (x *SystemInfo) GetGpuUsagePercent() []string {
 	if x != nil {
 		return x.GpuUsagePercent
 	}
-	return 0
+	return nil
 }
 
 func (x *SystemInfo) GetIoReadUsagePercent() float32 {
@@ -393,7 +393,7 @@ var file_config_proto_rawDesc = []byte{
 	0x65, 0x72, 0x63, 0x65, 0x6e, 0x74, 0x18, 0x05, 0x20, 0x03, 0x28, 0x02, 0x52, 0x0f, 0x6e, 0x70,
 	0x75, 0x55, 0x73, 0x61, 0x67, 0x65, 0x50, 0x65, 0x72, 0x63, 0x65, 0x6e, 0x74, 0x12, 0x2a, 0x0a,
 	0x11, 0x67, 0x70, 0x75, 0x5f, 0x75, 0x73, 0x61, 0x67, 0x65, 0x5f, 0x70, 0x65, 0x72, 0x63, 0x65,
-	0x6e, 0x74, 0x18, 0x06, 0x20, 0x01, 0x28, 0x02, 0x52, 0x0f, 0x67, 0x70, 0x75, 0x55, 0x73, 0x61,
+	0x6e, 0x74, 0x18, 0x06, 0x20, 0x03, 0x28, 0x09, 0x52, 0x0f, 0x67, 0x70, 0x75, 0x55, 0x73, 0x61,
 	0x67, 0x65, 0x50, 0x65, 0x72, 0x63, 0x65, 0x6e, 0x74, 0x12, 0x31, 0x0a, 0x15, 0x69, 0x6f, 0x5f,
 	0x72, 0x65, 0x61, 0x64, 0x5f, 0x75, 0x73, 0x61, 0x67, 0x65, 0x5f, 0x70, 0x65, 0x72, 0x63, 0x65,
 	0x6e, 0x74, 0x18, 0x07, 0x20, 0x01, 0x28, 0x02, 0x52, 0x12, 0x69, 0x6f, 0x52, 0x65, 0x61, 0x64,

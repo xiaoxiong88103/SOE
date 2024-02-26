@@ -47,7 +47,7 @@ func (s *Server) GetSystemInfo(ctx context.Context, in *pb.SystemInfo) (*pb.Resp
 	return &pb.Response{Time: float32(put_time)}, nil
 }
 
-func influxdb_link(ip string, bandwidth float32, cpu float32, mem float32, vpu float32, npu []float32, gpu float32, ioread float32, iowrite float32, networkup float32, networkload float32, netcon int64, systemaver float32, disksize string, time_node string) {
+func influxdb_link(ip string, bandwidth float32, cpu float32, mem float32, vpu float32, npu []float32, gpu []string, ioread float32, iowrite float32, networkup float32, networkload float32, netcon int64, systemaver float32, disksize string, time_node string) {
 	// InfluxDB 链接
 	client := influxdb2.NewClient(json_plus("url"), json_plus("token"))
 	// 获取写入数据的实例

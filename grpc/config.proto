@@ -38,7 +38,7 @@ message SystemInfo {
   float memory_usage_percent = 3;  // 内存使用率
   float vpu_usage_percent = 4;     // VPU使用百分比
   repeated float npu_usage_percent = 5;     // NPU使用百分比
-  float gpu_usage_percent = 6;     // GPU使用百分比
+  repeated string gpu_usage_percent = 6;     // GPU使用各种数据只支持Nvidia-smi目前
   float io_read_usage_percent = 7; // IO读取使用率
   float io_write_usage_percent = 8; // IO写入使用率
   float network_upload_usage_percent = 9; // 网络上传使用率
