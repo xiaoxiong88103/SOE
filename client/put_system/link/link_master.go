@@ -1,9 +1,11 @@
 package link
 
 import (
+	"context"
 	"fmt"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/keepalive"
+	"google.golang.org/grpc/metadata"
 	"influxdb/config"
 	pb "influxdb/grpc"
 	"sync"
@@ -71,4 +73,14 @@ func Link_master() (pb.SystemMetricsClient, func(), error) {
 
 	// 返回客户端和关闭连接的函数
 	return client, func() { conn.Close() }, nil
+}
+
+// TokenInterceptor 是一个 gRPC 拦截器，用于在每个请求中添加 token
+func TokenInterceptor() grpc.UnaryClientInterceptor {
+	return func(ctx context.Context, method string, req, reply interface{}, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
+		token := "xiaoxiong"
+		md := metadata.Pairs("token", token)
+		ctx = metadata.NewOutgoingContext(ctx, md)
+		return invoker(ctx, method, req, reply, cc, opts...)
+	}
 }

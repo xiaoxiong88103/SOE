@@ -108,7 +108,7 @@ func get_system() []string {
 	bootTimeString := bootTime.Format("2006-01-02 15:04:05")
 
 	// 将系统信息存储到切片中
-	systemInfo := []string{prettyName, "|", kernelVersion, "|", bootTimeString}
+	systemInfo := []string{"system_name:", prettyName, " kernel_version:", kernelVersion, " system_uptime: ", bootTimeString}
 
 	return systemInfo
 }

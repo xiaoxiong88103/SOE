@@ -1,9 +1,13 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/keepalive"
+	"google.golang.org/grpc/metadata"
+	"google.golang.org/grpc/status"
 	"influxdb/config"
 	pb "influxdb/grpc"
 	"influxdb/master/function"
@@ -11,6 +15,28 @@ import (
 	"net"
 	"time"
 )
+
+// TokenInterceptor 是一个 gRPC 拦截器，用于验证客户端提供的 token
+func tokenInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
+	md, ok := metadata.FromIncomingContext(ctx)
+	if !ok {
+		return nil, status.Errorf(codes.Unauthenticated, "无法获取 metadata")
+	}
+
+	// 获取客户端提供的 token
+	token := md.Get("token")
+	if len(token) == 0 {
+		return nil, status.Errorf(codes.Unauthenticated, "未提供 token")
+	}
+
+	// 验证 token 是否等于 "xiaoxiong"
+	if token[0] != "xiaoxiong" {
+		return nil, status.Errorf(codes.PermissionDenied, "无效的 token")
+	}
+
+	// 如果 token 有效，则调用下一个处理程序
+	return handler(ctx, req)
+}
 
 func main() {
 	prot, err := config.Dcode_json("config.json", "prot")
@@ -33,6 +59,7 @@ func main() {
 
 	grpcServer := grpc.NewServer(
 		grpc.KeepaliveParams(kasp),
+		grpc.UnaryInterceptor(tokenInterceptor), // 添加拦截器
 	)
 
 	pb.RegisterSystemMetricsServer(grpcServer, &function.Server{})
