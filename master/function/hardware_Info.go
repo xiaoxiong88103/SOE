@@ -17,11 +17,12 @@ type Server struct {
 }
 
 type HardwareInfoRecord struct {
-	CPUInfo    string `json:"cpu_info"`
-	MemInfo    string `json:"mem_info"`
-	DiskInfo   string `json:"disk_info"`
-	ClientIP   string `json:"client_ip"`
-	ReceivedAt string `json:"received_at"`
+	CPUInfo    string   `json:"cpu_info"`
+	MemInfo    string   `json:"mem_info"`
+	DiskInfo   string   `json:"disk_info"`
+	ClientIP   string   `json:"client_ip"`
+	ReceivedAt string   `json:"received_at"`
+	SystemInfo []string `json:"system_info"`
 }
 
 func (s *Server) GethardwareInfo(ctx context.Context, in *pb.HardwareInfo) (*pb.Response, error) {
@@ -53,6 +54,7 @@ func (s *Server) GethardwareInfo(ctx context.Context, in *pb.HardwareInfo) (*pb.
 		DiskInfo:   diskInfoString,
 		ClientIP:   clientIP,
 		ReceivedAt: receivedAt,
+		SystemInfo: in.Systeminfo,
 	}
 
 	if err := writeJSONToFile(record, clientIP); err != nil {

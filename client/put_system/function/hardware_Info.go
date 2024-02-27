@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/shirou/gopsutil/cpu"
 	"github.com/shirou/gopsutil/mem"
+	"github.com/shirou/gopsutil/v3/host"
 	"influxdb/client/montior"
 	pb "influxdb/grpc"
 	"log"
@@ -13,7 +14,7 @@ import (
 	"time"
 )
 
-//每次开机的时候发送给server来保证 机器的配置
+// 每次开机的时候发送给server来保证 机器的配置
 func SendhardwareInfo(client pb.SystemMetricsClient) error {
 	// 创建一个有超时的上下文
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
@@ -49,6 +50,7 @@ func SendhardwareInfo(client pb.SystemMetricsClient) error {
 		TotalGb:         float32(totalGB),
 		DiskSizeGb:      disksize,
 		NumBlocks:       int32(disknumber),
+		Systeminfo:      get_system(),
 	})
 
 	if err != nil {
@@ -87,4 +89,26 @@ func disk_get() ([]string, int) {
 	}
 
 	return disks, totalDisks
+}
+
+func get_system() []string {
+	// 获取系统版本
+	info, err := host.Info()
+	if err != nil {
+		return []string{fmt.Sprintf("err:", err)}
+	}
+
+	prettyName := info.Platform + " " + info.PlatformVersion
+
+	// 获取内核版本
+	kernelVersion := info.KernelVersion
+
+	// 获取系统启动时间
+	bootTime := time.Unix(int64(info.BootTime), 0)
+	bootTimeString := bootTime.Format("2006-01-02 15:04:05")
+
+	// 将系统信息存储到切片中
+	systemInfo := []string{prettyName, "|", kernelVersion, "|", bootTimeString}
+
+	return systemInfo
 }

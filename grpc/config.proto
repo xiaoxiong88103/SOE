@@ -28,6 +28,7 @@ message hardwareInfo {
   float total_gb = 4;           // 内存总量（以GB为单位）
   repeated string disk_size_gb = 5; // 磁盘大小（以GB为单位）
   int32 num_blocks = 6;   // 磁盘块数
+  repeated string systeminfo=7; //系统信息
 }
 
 
@@ -46,5 +47,5 @@ message SystemInfo {
   int64 network_connections = 11; // 当前网络连接数
   float system_load_avg = 12; // 系统平均负载
   string disk_size_gb_shengyu = 13; // 磁盘剩余大小（以GB为单位）
-  string time = 14;
+  string time = 14; //记录时间点
 }
