@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"google.golang.org/grpc"
+	"influxdb/client/put_system/link"
 	"influxdb/config"
 	pb "influxdb/grpc"
 	"io/ioutil"
@@ -34,7 +35,8 @@ func Put_log_json() {
 
 	for {
 		if Show_Global() == 1 {
-			break
+			time.Sleep(3 * time.Second) // 等待一段时间后重试
+			continue
 		}
 
 		// 找到最旧的日志文件
@@ -159,6 +161,7 @@ func link_master_2() (pb.SystemMetricsClient, func(), error) {
 				ip,
 				grpc.WithInsecure(),
 				grpc.WithBlock(),
+				grpc.WithUnaryInterceptor(link.TokenInterceptor()),
 			)
 
 			if err_offonline != nil {

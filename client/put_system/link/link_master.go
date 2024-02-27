@@ -56,6 +56,7 @@ func Link_master() (pb.SystemMetricsClient, func(), error) {
 			grpc.WithInsecure(),
 			grpc.WithBlock(),
 			grpc.WithKeepaliveParams(kacp), // 添加心跳参数
+			grpc.WithUnaryInterceptor(TokenInterceptor()),
 		)
 
 		if err != nil {
