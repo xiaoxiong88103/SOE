@@ -140,7 +140,7 @@ func getGPUUsage() []string {
 
 		return []string{fmt.Sprintf("[GPU:%s]", loadValue)}
 	}
-	gpu, err := config.Dcode_json("config.json", "gpu")
+	gpu, err := config.Dcode_json("config.json", "gpu_open")
 	if err != nil {
 		return []string{fmt.Sprintf("[Error gpu_config: %v]", err)}
 	}
