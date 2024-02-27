@@ -111,7 +111,6 @@ func Json_data() UsageData {
 
 func deleteOldFiles(dirPath string, days int) error {
 	threshold := time.Now().AddDate(0, 0, -days) // 设置天数阈值
-
 	files, err := os.ReadDir(dirPath)
 	if err != nil {
 		return err
