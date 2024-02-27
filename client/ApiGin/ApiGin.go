@@ -13,21 +13,13 @@ import (
 func ApiGin() {
 	route := gin.Default()
 	gin.DefaultWriter = ioutil.Discard
-	ip, err := config.Dcode_json("config.json", "serverip")
-	if err != nil {
-		fmt.Println("获取IP错误")
-		return
-	}
-	parts := strings.Split(ip, ":")
+	//获取白名单IP和 接口用到的端口的函数
+	ip, prot := getconfig()
+
 	// 添加 IP 白名单中间件
-	route.Use(IPWhiteList([]string{parts[0]}))
+	route.Use(IPWhiteList([]string{ip}))
 
 	route.GET("/ping", function.Get_Null)
-
-	prot, err := config.Dcode_json("config.json", "gin_prot")
-	if err != nil {
-		fmt.Println("开启的时候报错:", err)
-	}
 
 	route.Run(":" + prot)
 }
@@ -52,4 +44,21 @@ func IPWhiteList(whitelist []string) gin.HandlerFunc {
 		// 允许请求继续访问后续的处理函数
 		c.Next()
 	}
+}
+
+// 获取配置里的函数
+func getconfig() (string, string) {
+	//获取验证的IP
+	ip, err := config.Dcode_json("config.json", "serverip")
+	if err != nil {
+		fmt.Println("获取IP错误:", err)
+	}
+	parts := strings.Split(ip, ":")
+
+	//获取端口号
+	prot, err := config.Dcode_json("config.json", "gin_prot")
+	if err != nil {
+		fmt.Println("开启的时候报错:", err)
+	}
+	return parts[0], prot
 }
