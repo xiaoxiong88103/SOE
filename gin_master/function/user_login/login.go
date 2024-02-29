@@ -13,7 +13,7 @@ import (
 // @Tags 用户认证
 // @Accept json
 // @Produce json
-// @Param user_login body User true "登录信息"
+// @Param user_login body Login true "登录信息"
 // @Success 200 {object} string "成功登录，返回token" 返回的json({"message": "用户名和密码验证成功", "token":token })
 // @Failure 401 {object} string "认证失败" 返回的json({"error": "验证失败", "User": 用户名})
 // @Router /login [post]
