@@ -28,6 +28,20 @@ func queryGPUInfo(query string) ([]string, error) {
 	return strings.Split(strings.TrimSpace(string(output)), "\n"), nil
 }
 
+func queryGUPdec() (string, string, error) {
+	cmd := exec.Command("bash", "-c", "nvidia-smi dmon | awk 'NR > 2 {print  $7,  $8; exit}'")
+	output, err := cmd.Output()
+	if err != nil {
+		return "", "", err
+	}
+
+	values := strings.Fields(string(output))
+	if len(values) != 2 {
+		return "", "", fmt.Errorf("unexpected number of values returned")
+	}
+	return values[0], values[1], nil
+}
+
 // formatGPUInfo 用于根据条件格式化GPU信息
 func formatGPUInfo(temperatures, memoryUsed, memoryTotal, utilization []string) ([]string, error) {
 	var formattedInfo []string
@@ -37,6 +51,12 @@ func formatGPUInfo(temperatures, memoryUsed, memoryTotal, utilization []string) 
 		infoParts = append(infoParts, fmt.Sprintf("Used:%sMB", memoryUsed[i]))
 		infoParts = append(infoParts, fmt.Sprintf("Total:%sMB", memoryTotal[i]))
 		infoParts = append(infoParts, fmt.Sprintf("Utilization:%s%%", utilization[i]))
+		enc, dec, err := queryGUPdec()
+		if err != nil {
+			infoParts = append(infoParts, fmt.Sprintf("errror:%s%%", err))
+		}
+		infoParts = append(infoParts, fmt.Sprintf("Dec:%s%%", dec))
+		infoParts = append(infoParts, fmt.Sprintf("Enc:%s%%", enc))
 		formattedInfo = append(formattedInfo, strings.Join(infoParts, ", "))
 	}
 
