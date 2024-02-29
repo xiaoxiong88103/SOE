@@ -3,12 +3,13 @@ package bf_ini
 import (
 	"fmt"
 	"github.com/go-ini/ini"
+	"influxdb/config"
 	"strconv"
 )
 
 // GetINIValue 从INI文件中获取指定section和key的值
 func Get_config(section, key string) (string, error) {
-	cfg, err := ini.Load("./data_web/basic/basic.ini")
+	cfg, err := ini.Load(config.Path_basic + "basic.ini")
 	if err != nil {
 		return "", err
 	}

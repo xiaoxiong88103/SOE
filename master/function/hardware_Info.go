@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"google.golang.org/grpc/peer"
+	"influxdb/config"
 	pb "influxdb/grpc"
 	"net"
 	"os"
@@ -66,7 +67,7 @@ func (s *Server) GethardwareInfo(ctx context.Context, in *pb.HardwareInfo) (*pb.
 }
 
 func writeJSONToFile(record HardwareInfoRecord, ip string) error {
-	filePath := "./data/" + ip + ".json"
+	filePath := config.Path_data + ip + ".json"
 
 	// 删除现有文件
 	if err := os.Remove(filePath); err != nil && !os.IsNotExist(err) {

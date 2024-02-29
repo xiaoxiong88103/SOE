@@ -6,10 +6,6 @@ import (
 )
 
 func main() {
-	prot, err := config.Dcode_json("web.json", "token_key")
-	if err != nil {
-		fmt.Println("开启的时候报错:", err)
-	}
-	fmt.Println(prot)
-
+	dir := config.Gin_master_dir_user()
+	fmt.Println(dir)
 }

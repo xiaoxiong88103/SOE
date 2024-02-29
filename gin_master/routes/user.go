@@ -3,7 +3,7 @@ package routes
 import (
 	"github.com/gin-gonic/gin"
 	"influxdb/gin_master/function"
-	"influxdb/gin_master/function/user_login"
+	"influxdb/gin_master/function/user/user_login"
 )
 
 // SetupUserRoutes 设置用户相关的路由

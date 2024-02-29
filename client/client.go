@@ -38,9 +38,11 @@ func main() {
 	go func() {
 		function.Put_log_json()
 	}()
+
 	go func() {
 		ApiGin.ApiGin() //开启API的功能给master调用
 	}()
+
 	// 使用 Link_master 函数连接服务器
 	client, conn, err := link.Link_master()
 	if err != nil {

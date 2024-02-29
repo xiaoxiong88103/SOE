@@ -6,7 +6,7 @@ import (
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"influxdb/config"
-	"influxdb/gin_master/function/user_login"
+	"influxdb/gin_master/function/user/user_login"
 	"influxdb/gin_master/routes"
 )
 

@@ -7,9 +7,9 @@ import (
 	"strconv"
 )
 
-func Dcode_json(configjson string ,Select string) (string, error) {
+func Dcode_json(configjson string, Select string) (string, error) {
 	// 打开配置文件
-	configFile, err := os.Open("config/"+configjson)
+	configFile, err := os.Open(Path_config + configjson)
 	if err != nil {
 		return "", fmt.Errorf("无法打开配置文件: %v", err)
 	}
@@ -34,9 +34,9 @@ func Dcode_json(configjson string ,Select string) (string, error) {
 	return serverIP, nil
 }
 
-func DecodeJsonAsInt(configjson string,Select string) (int, error) {
+func DecodeJsonAsInt(configjson string, Select string) (int, error) {
 	// 打开配置文件
-	configFile, err := os.Open("config/"+configjson)
+	configFile, err := os.Open(Path_config + configjson)
 	if err != nil {
 		return 0, fmt.Errorf("无法打开配置文件: %v", err)
 	}

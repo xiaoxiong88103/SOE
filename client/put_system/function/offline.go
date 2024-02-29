@@ -35,7 +35,7 @@ func Off_line(data UsageData) error {
 	}
 
 	// 生成当前日期的文件名
-	fileDir := "./data/"
+	fileDir := config.Path_data
 	fileName := fmt.Sprintf("%s%s_data.log", fileDir, time.Now().Format("2006-01-02"))
 
 	// 确保文件夹存在

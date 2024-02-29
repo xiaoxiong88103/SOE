@@ -3,7 +3,7 @@ package user_login
 import (
 	"github.com/gin-gonic/gin"
 	"influxdb/gin_master/function"
-	"influxdb/gin_master/function/user_ini"
+	"influxdb/gin_master/function/user/user_ini"
 	"net/http"
 )
 
