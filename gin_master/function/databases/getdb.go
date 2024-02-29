@@ -141,13 +141,14 @@ func Get_db_time(c *gin.Context) {
 from(bucket: "%s")
   |> range(start: %s, stop: %s)
   |> filter(fn: (r) => r["_measurement"] == "system_info")
-  |> filter(fn: (r) => r["_field"] == "cpu"  or r["_field"] == "gpu" or r["_field"] == "ioread" or r["_field"] == "iowrite" or r["_field"] == "netcon" or r["_field"] == "mem" or r["_field"] == "networkload" or r["_field"] == "networkup" or r["_field"] == "systemaver"  or r["_field"] == "vpu" or r["_field"] == "bandwidth")
+  |> filter(fn: (r) => r["_field"] == "cpu" or r["_field"] == "ioread" or r["_field"] == "iowrite" or r["_field"] == "netcon" or r["_field"] == "mem" or r["_field"] == "networkload" or r["_field"] == "networkup" or r["_field"] == "systemaver"  or r["_field"] == "vpu" or r["_field"] == "bandwidth")
   |> yield(name: "mean")`, master, timestart, timestop)
 
 	// 执行第二次查询
 	query2 := fmt.Sprintf(`from(bucket: "%s")
 		|> range(start: %s, stop: %s)
-		|> filter(fn: (r) => r._measurement == "system_info" and (r._field == "npu" or r._field == "disksize"))`, master, timestart, timestop)
+		|> filter(fn: (r) => r._measurement == "system_info" and (r._field == "npu" or r._field == "disksize" or r["_field"] == "gpu" ))`, master, timestart, timestop)
+
 	// 执行查询并处理结果
 	var results []Query_Result_all
 	if err := executeQuery(client, org, query1, &results); err != nil {
