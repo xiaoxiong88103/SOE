@@ -23,6 +23,10 @@ export default defineConfig({
     // Vue jsx
     vueJsx(),
   ],
+  // scss编译器
+  css: {
+    preprocessorOptions: {},
+  },
   resolve: {
     alias: {
       "@": join(__dirname, "src"),

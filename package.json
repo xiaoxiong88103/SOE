@@ -13,6 +13,7 @@
     "ant-design-vue": "4.x",
     "join": "^3.0.0",
     "pinia": "^2.1.7",
+    "sass": "^1.71.1",
     "unplugin-vue-components": "^0.26.0",
     "vue": "^3.4.19",
     "vue-router": "^4.3.0"

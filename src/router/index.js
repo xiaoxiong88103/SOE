@@ -10,6 +10,14 @@ const routes = [
     //   console.log("独享");
     // },
   },
+  {
+    path: "/main",
+    name: "404",
+    component: () => import("@/views/main.vue"),
+    // beforeEnter: (to, from) => {
+    //   console.log("独享");
+    // },
+  },
   // {
   //   path: "/",
   //   name: "home",
