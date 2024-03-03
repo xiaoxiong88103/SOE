@@ -2,12 +2,12 @@
   <a-layout style="height: 100vh">
     <a-layout-header class="header">
       <div class="logo" />
-      <a-menu theme="dark" mode="horizontal" :style="{ lineHeight: '64px' }">
-        <!-- <a-menu-item key="1">nav 1</a-menu-item>
+      <!-- <a-menu theme="dark" mode="horizontal" :style="{ lineHeight: '64px' }">
+        <a-menu-item key="1">nav 1</a-menu-item>
         <a-menu-item key="2">nav 2</a-menu-item>
-        <a-menu-item key="3">nav 3</a-menu-item> -->
-        top
-      </a-menu>
+        <a-menu-item key="3">nav 3</a-menu-item>
+      </a-menu> -->
+      <span style="color: #fff">SEO运维系统</span>
     </a-layout-header>
     <a-layout>
       <a-layout-sider
@@ -18,25 +18,26 @@
         collapsible
       >
         <div class="triggerCout">
-          <menu-unfold-outlined
-            v-if="collapsed"
-            class="trigger"
+          <a-button
+            style="height: 35px; margin: 5px 3px"
             @click="() => (collapsed = !collapsed)"
-          />
-          <menu-fold-outlined
-            v-else
-            class="trigger"
-            @click="() => (collapsed = !collapsed)"
-          />
+          >
+            <MenuUnfoldOutlined v-if="collapsed" />
+            <MenuFoldOutlined v-else />
+          </a-button>
+          <!-- <a-button @click="toggleCollapsed">
+            <MenuUnfoldOutlined v-if="state.collapsed" />
+            <MenuFoldOutlined v-else />
+          </a-button> -->
         </div>
-        <a-button
+        <!-- <a-button
           type="primary"
           style="margin-bottom: 16px"
           @click="toggleCollapsed"
         >
           <MenuUnfoldOutlined v-if="state.collapsed" />
           <MenuFoldOutlined v-else />
-        </a-button>
+        </a-button> -->
         <a-menu
           v-model:openKeys="state.openKeys"
           v-model:selectedKeys="state.selectedKeys"
@@ -46,7 +47,7 @@
         ></a-menu>
       </a-layout-sider>
       <a-layout style="padding: 0 24px 24px">
-        <a-breadcrumb style="margin: 16px 0">
+        <a-breadcrumb style="margin: 20px 40px">
           <a-breadcrumb-item>Home</a-breadcrumb-item>
           <a-breadcrumb-item>List</a-breadcrumb-item>
           <a-breadcrumb-item>App</a-breadcrumb-item>
@@ -87,81 +88,59 @@ const items = reactive([
   {
     key: "1",
     icon: () => h(PieChartOutlined),
-    label: "Option 1",
-    title: "Option 1",
+    label: "数据面板",
+    title: "数据面板",
   },
   {
     key: "2",
     icon: () => h(DesktopOutlined),
-    label: "Option 2",
+    label: "系统信息",
     title: "Option 2",
   },
   {
     key: "3",
     icon: () => h(InboxOutlined),
-    label: "Option 3",
+    label: "定时任务",
     title: "Option 3",
   },
   {
     key: "sub1",
     icon: () => h(MailOutlined),
-    label: "Navigation One",
-    title: "Navigation One",
+    label: "运维日志",
+    title: "运维日志",
     children: [
       {
         key: "5",
-        label: "Option 5",
-        title: "Option 5",
+        label: "运维日志1",
+        title: "运维日志",
       },
       {
         key: "6",
-        label: "Option 6",
-        title: "Option 6",
-      },
-      {
-        key: "7",
-        label: "Option 7",
-        title: "Option 7",
-      },
-      {
-        key: "8",
-        label: "Option 8",
-        title: "Option 8",
+        label: "运维日志2",
+        title: "运维日志",
       },
     ],
   },
   {
     key: "sub2",
     icon: () => h(AppstoreOutlined),
-    label: "Navigation Two",
-    title: "Navigation Two",
+    label: "小工具",
+    title: "小工具",
     children: [
       {
         key: "9",
-        label: "Option 9",
-        title: "Option 9",
+        label: "小工具1",
+        title: "小工具1",
       },
       {
         key: "10",
-        label: "Option 10",
-        title: "Option 10",
+        label: "小工具2",
+        title: "小工具2",
       },
       {
         key: "sub3",
-        label: "Submenu",
-        title: "Submenu",
-        children: [
-          {
-            key: "11",
-            label: "Option 11",
-            title: "Option 11",
-          },
-          {
-            key: "12",
-            label: "Option 12",
-            title: "Option 12",
-          },
-        ],
+        label: "小工具3",
+        title: "小工具3",
       },
     ],
   },
@@ -181,13 +160,8 @@ const toggleCollapsed = () => {
 .triggerCout {
   position: absolute;
   top: 0;
-  right: -25px;
-  .trigger {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 25px;
-    height: 25px;
-  }
+  right: -60px;
+  width: 60px;
+  height: 40px;
 }
 </style>
