@@ -17,7 +17,7 @@
         :trigger="null"
         collapsible
       >
-        <div class="triggerCout">
+        <div class="triggerCount">
           <a-button
             style="height: 35px; margin: 5px 3px"
             @click="() => (collapsed = !collapsed)"
@@ -25,19 +25,7 @@
             <MenuUnfoldOutlined v-if="collapsed" />
             <MenuFoldOutlined v-else />
           </a-button>
-          <!-- <a-button @click="toggleCollapsed">
-            <MenuUnfoldOutlined v-if="state.collapsed" />
-            <MenuFoldOutlined v-else />
-          </a-button> -->
         </div>
-        <!-- <a-button
-          type="primary"
-          style="margin-bottom: 16px"
-          @click="toggleCollapsed"
-        >
-          <MenuUnfoldOutlined v-if="state.collapsed" />
-          <MenuFoldOutlined v-else />
-        </a-button> -->
         <a-menu
           v-model:openKeys="state.openKeys"
           v-model:selectedKeys="state.selectedKeys"
@@ -58,9 +46,11 @@
             padding: '24px',
             margin: 0,
             minHeight: '280px',
+            overflow: 'hidden',
+            overflowY: 'auto',
           }"
         >
-          Content
+          <router-view />
         </a-layout-content>
       </a-layout>
     </a-layout>
@@ -79,9 +69,6 @@ import {
 } from "@ant-design/icons-vue";
 const collapsed = ref(false);
 const state = reactive({
-  collapsed: false,
-  selectedKeys: ["1"],
-  openKeys: ["sub1"],
   preOpenKeys: ["sub1"],
 });
 const items = reactive([
@@ -157,7 +144,7 @@ const toggleCollapsed = () => {
 };
 </script>
 <style lang="scss">
-.triggerCout {
+.triggerCount {
   position: absolute;
   top: 0;
   right: -60px;

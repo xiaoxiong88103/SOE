@@ -17,6 +17,13 @@ const routes = [
     // beforeEnter: (to, from) => {
     //   console.log("独享");
     // },
+    children: [
+      {
+        path: "home",
+        name: "home",
+        component: () => import("@/views/home/index.vue"), // component: import('../views/reg.vue')
+      },
+    ],
   },
   // {
   //   path: "/",
