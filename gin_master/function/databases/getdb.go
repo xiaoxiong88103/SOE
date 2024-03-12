@@ -166,6 +166,54 @@ from(bucket: "%s")
 
 }
 
+// GetLatestSystemInfo 查询每个指标的60分钟之内的最新一条数据
+// @Summary 查询每个指标的最新一条数据
+// @Description 查询 InfluxDB 中每个 system_info 指标的最新一条数据，并返回相关字段的值
+// @Tags 数据库
+// @Accept json
+// @Produce json
+// @Success 200 {object} []Query_Result_all "查询成功，返回数据数组"
+// @Failure 400 {object} string "查询参数错误" "返回的json({'error': 错误信息})"
+// @Failure 500 {object} string "内部服务器错误" "返回的json({'error': 错误信息})"
+// @Router /show_db/latest [get]
+func GetLatestSystemInfo(c *gin.Context) {
+	url := json_plus("url")
+	token := json_plus("token")
+	if url == "" || token == "" {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Invalid URL or Token"})
+		return
+	}
+
+	client := influxdb2.NewClient(url, token)
+	if client == nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create InfluxDB client"})
+		return
+	}
+	defer client.Close()
+
+	org := json_plus("org")
+	master := json_plus("databases")
+
+	// 构造查询语句以获取每个字段的最新值
+	query := fmt.Sprintf(`
+from(bucket: "%s")
+  |> range(start: -60m)
+  |> filter(fn: (r) => r["_measurement"] == "system_info")
+  |> last()
+  |> group(columns: ["_field"])
+  |> yield(name: "latest")`, master)
+
+	// 执行查询并处理结果
+	var results []Query_Result_all
+	if err := executeQuery(client, org, query, &results); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	// 返回查询结果
+	c.JSON(http.StatusOK, gin.H{"data": results, "code": "200"})
+}
+
 // executeQuery 执行查询并解析结果
 func executeQuery(client influxdb2.Client, org string, query string, results *[]Query_Result_all) error {
 	result, err := client.QueryAPI(org).Query(context.Background(), query)
