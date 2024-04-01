@@ -160,7 +160,7 @@ func UpdateUser(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "用户修改成功"})
 }
 
-// ShowUserHandler 处理 /user/show 的 GET 请求
+// ShowUserHandler 处理 /user_login/show 的 GET 请求
 // @Summary 显示用户信息
 // @Description 获取系统中所有用户的账号、权限和组信息
 // @Tags 用户
