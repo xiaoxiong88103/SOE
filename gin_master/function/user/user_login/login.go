@@ -172,7 +172,7 @@ func UpdateUser(c *gin.Context) {
 // @Failure 401 {object} string "未授权" 返回的json({"error": "无效的令牌"})
 // @Failure 403 {object} string "禁止访问" 返回的json({"message": "对不起你权限不足"})
 // @Failure 500 {object} string "内部服务器错误" 返回的json({"error": "错误信息"})
-// @Router /user/show [get]
+// @Router /user_login/show [get]
 func ShowUserHandler(c *gin.Context) {
 	tokenString := c.GetHeader("Authorization")
 
